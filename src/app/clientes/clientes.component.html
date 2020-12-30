@@ -1,4 +1,4 @@
-<detalle-cliente [cliente]="clienteSeleccionado"></detalle-cliente>
+<detalle-cliente *ngIf="clienteSeleccionado" [cliente]="clienteSeleccionado"></detalle-cliente>
 
 <div class="card text-white bg-secondary mb-3" style="width: auto;">
     <div class="card-header">Clientes</div>
@@ -21,15 +21,16 @@
             <tbody>
                 <tr *ngFor="let cliente of clientes">
                     <td>
-                        <a [routerLink]="['/clientes/ver/', cliente.id]">{{cliente.id}}</a></td>
-                    <td>{{cliente.nombre}}</td>
-                    <td>{{cliente.apellido | uppercase}}</td>
-                    <td>{{cliente.createAt | date:"EEEE dd, MMMM, yyyy "}}</td>
-                    <td>{{cliente.email}}</td>
-                    <td>
-                        <button class="btn btn-primary btn-sm " [routerLink]="[ 'form',cliente.id] ">Editar</button>
-                        <button class="btn btn-primary btn-sm bg-warning " (click)='delete(cliente)'>Eliminar</button>
-                    </td>
+                        <img (click)="abrirModal(cliente)" *ngIf="cliente?.foto" class="img-thumbnail rounded border-0 bg-transparent" src="http://localhost:8080/api/uploads/img/{{cliente.foto}}" style="width: 64px; cursor: pointer;">
+                        <img (click)="abrirModal(cliente)" *ngIf="!cliente.foto" class="img-thumbnail rounded border-0 bg-transparent" src="http://localhost:8080/images/nouser.png" alt="sin foto" style="width: 64px; cursor: pointer;">
+                        <td>{{cliente.nombre}}</td>
+                        <td>{{cliente.apellido | uppercase}}</td>
+                        <td>{{cliente.createAt | date:"EEEE dd, MMMM, yyyy "}}</td>
+                        <td>{{cliente.email}}</td>
+                        <td>
+                            <button class="btn btn-primary btn-sm " [routerLink]="[ 'form',cliente.id] ">Editar</button>
+                            <button class="btn btn-primary btn-sm bg-warning " (click)='delete(cliente)'>Eliminar</button>
+                        </td>
                 </tr>
             </tbody>
 

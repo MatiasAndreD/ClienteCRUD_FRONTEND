@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit , Input} from '@angular/core';
 import { Cliente } from '../cliente';
 import { ClienteService } from '../cliente.service';
+import { ModalService } from './modal.service';
 import  swal  from 'sweetalert2'
 import { HttpEventType } from '@angular/common/http';
 
@@ -13,26 +13,16 @@ import { HttpEventType } from '@angular/common/http';
 })
 export class DetalleComponent implements OnInit {
 
-  cliente: Cliente;
+  @Input() cliente: Cliente;
   titulo: String = "Detalle del cliente";
   fotoSeleccionada: File;
   progreso:number = 0;
 
 
-  constructor(private clienteService:ClienteService, private activatedRoute:ActivatedRoute) { }
+  constructor(private clienteService:ClienteService, public modalService:ModalService) { }
 
   ngOnInit(): void {
-    this.activatedRoute.paramMap.subscribe(
-      params =>{
-        let id = +params.get('id')
-
-        if(id){
-          this.clienteService.getCliente(id).subscribe(cliente =>{
-            this.cliente = cliente;
-          })
-        }
-      }
-    )
+   
   }
 
   seleccionarFoto(event){
@@ -47,7 +37,7 @@ export class DetalleComponent implements OnInit {
   subirFoto(){
 
     if(!this.fotoSeleccionada){
-      swal.fire(`No ha seleccionado ninguna imagen`, `Porfavor, selecciona una imagen para continuar`,'error')  
+      swal.fire(`No ha seleccionado ninguna imagen`, `Porfavor, selecciona una imagen para continuar`,'error');
     }else{
       this.clienteService.subirFoto(this.fotoSeleccionada,this.cliente.id).subscribe(
       event =>{
@@ -59,10 +49,14 @@ export class DetalleComponent implements OnInit {
           swal.fire('La foto se ha subido completamente', response.mensaje, 'success' );
         }
 
-        }
-      );
-        swal.fire('La foto del cliente ', `se a subido con exito`,'success')     
+        });
       }
+    }
+
+    cerrarModal(){
+      this.fotoSeleccionada = null;
+      this.progreso = 0;
+      this.modalService.modelDesactivate();
     }
   }
 

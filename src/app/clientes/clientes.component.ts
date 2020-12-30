@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
 import { Cliente } from './cliente';
 import { ClienteService } from './cliente.service';
+import { ModalService } from './detalle/modal.service';
 import { ActivatedRoute } from '@angular/router';
 
 
@@ -14,9 +15,11 @@ export class ClientesComponent implements OnInit {
 
   clientes : Cliente[];
   paginador:any;
+  clienteSeleccionado:Cliente; 
 
   constructor(private clienteService:ClienteService,
-              private activatedRoute:ActivatedRoute) { }
+              private activatedRoute:ActivatedRoute,
+              private modalService:ModalService) { }
 
   ngOnInit(): void {
     
@@ -77,4 +80,8 @@ swalWithBootstrapButtons.fire({
 })
   }
 
+  abrirModal(cliente:Cliente){
+    this.clienteSeleccionado = cliente
+    this.modalService.modelActivate();
+  }
 }

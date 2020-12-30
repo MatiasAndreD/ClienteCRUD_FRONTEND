@@ -5,7 +5,8 @@ import { HttpClient, HttpEvent, HttpHeaders, HttpRequest } from '@angular/common
 import { map,catchError,tap } from 'rxjs/operators'
 import { Router } from '@angular/router'
 import Swal from 'sweetalert2';
-import { formatDate } from '@angular/common';
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -100,10 +101,12 @@ export class ClienteService {
     let formData = new FormData();
     formData.append("archivo",archivo);
     formData.append("id",id);
+    console.log(formData)
+    
 
-    const req = new HttpRequest('POST', '`${this.urlEndPoint}/upload`',formData, {
+    const req = new HttpRequest('POST', `${this.urlEndPoint}/upload`,formData, {
       reportProgress: true
-    });
+    }); 
     
     return this.http.request(req)
   }
